@@ -1,5 +1,18 @@
 <resources>
-    <string name="app_name">Catnip</string>
+    <string name="app_name">REPRESENT!</string>
     <string name="hello_round">Hello Round World!</string>
     <string name="hello_square">Hello Square World!</string>
+    <string name="rep1">Congressperson A</string>
+    <string name="rep2">Congressperson B</string>
+    <string name="rep3">Congressperson C</string>
+    <string name="county">ABC County</string>
+    <string name="election">2012 Election Results</string>
+    <string name="obama">Obama: 51.1%</string>
+    <string name="romney">Romney: 47.2%</string>
+    <string-array name="representatives">
+        <item>Congressperson A</item>
+        <item>Congressperson B</item>
+        <item>Congressperson C</item>
+    </string-array>
+    <string name="title_activity_vote">vote</string>
 </resources>

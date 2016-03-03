@@ -3,40 +3,65 @@
     android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainActivity">
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/fred_img"
-        android:src="@drawable/fred_160"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="31dp" />
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/lexy_img"
-        android:src="@drawable/lexy_160"
-        android:layout_alignTop="@+id/fred_img"
-        android:layout_alignParentEnd="true" />
+    android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainActivity"
+    android:background="#BF0A30">
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Feed Fred"
-        android:id="@+id/fred_btn"
-        android:layout_centerVertical="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignEnd="@+id/fred_img" />
+        android:text="Use My Current Location"
+        android:id="@+id/location_btn"
+        android:layout_below="@+id/mainTitle"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="81dp"
+        android:background="#002868"
+        android:textColor="#FAFAFA"
+        android:padding="5dp"
+        android:paddingLeft="10dp"
+        android:paddingTop="10dp" />
 
-    <Button
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Feed Lexy"
-        android:id="@+id/lexy_btn"
-        android:layout_alignBottom="@+id/fred_btn"
-        android:layout_alignStart="@+id/lexy_img"
-        android:layout_alignEnd="@+id/lexy_img" />
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/app_name"
+        android:id="@+id/mainTitle"
+        android:textColor="#FAFAFA"
+        android:textStyle="bold"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="44dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Enter a Zipcode"
+        android:id="@+id/zipcodePrompt"
+        android:layout_marginTop="67dp"
+        android:textColor="#FAFAFA"
+        android:background="#002868"
+        android:padding="5dp"
+        android:paddingLeft="10dp"
+        android:paddingTop="10dp"
+        android:layout_below="@+id/location_btn"
+        android:layout_centerHorizontal="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:ems="10"
+        android:id="@+id/zipcode"
+        android:layout_below="@+id/zipcodePrompt"
+        android:textColor="#FAFAFA"
+        android:padding="5dp"
+        android:paddingLeft="10dp"
+        android:paddingTop="10dp"
+        android:layout_alignEnd="@+id/zipcodePrompt"
+        android:layout_alignStart="@+id/zipcodePrompt"
+        android:background="#002868"
+        android:gravity="center"
+        android:numeric="integer" />
 
 </RelativeLayout>

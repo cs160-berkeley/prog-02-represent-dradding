@@ -30,16 +30,20 @@ private static final String TOAST = "/send_toast";
             String value = new String(messageEvent.getData(), StandardCharsets.UTF_8);
 
             // Make a toast with the String
-            Context context = getApplicationContext();
-            int duration = Toast.LENGTH_SHORT;
-
-            Toast toast = Toast.makeText(context, value, duration);
-            toast.show();
+//            Context context = getApplicationContext();
+//            int duration = Toast.LENGTH_SHORT;
+//
+//            Toast toast = Toast.makeText(context, value, duration);
+//            toast.show();
 
             // so you may notice this crashes the phone because it's
             //''sending message to a Handler on a dead thread''... that's okay. but don't do this.
             // replace sending a toast with, like, starting a new activity or something.
             // who said skeleton code is untouchable? #breakCSconceptions
+
+            Intent i = new Intent(getApplicationContext(), detailed.class);
+            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            getApplicationContext().startActivity(i);
 
         } else {
             super.onMessageReceived( messageEvent );

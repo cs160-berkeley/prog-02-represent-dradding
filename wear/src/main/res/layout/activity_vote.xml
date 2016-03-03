@@ -2,29 +2,38 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent" android:gravity="center" android:layout_gravity="center"
-    tools:context=".MainActivity" android:orientation="vertical" tools:deviceIds="wear_round">
+    tools:context=".vote" android:orientation="vertical" tools:deviceIds="wear_round">
 
-    <TextView android:id="@+id/rep1" android:layout_width="wrap_content"
+    <TextView android:id="@+id/county" android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/rep1"
+        android:text="@string/county"
         android:textColor="#FAFAFA"
         android:textSize="20dp"
         android:layout_marginTop="5dp"
         android:layout_gravity="center_horizontal"
         android:clickable="true" />
 
-    <TextView android:id="@+id/rep2" android:layout_width="wrap_content"
+    <TextView android:id="@+id/election" android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/rep2"
+        android:text="@string/election"
         android:textColor="#FAFAFA"
         android:textSize="20dp"
         android:layout_marginTop="5dp"
         android:layout_gravity="center_horizontal"
         android:clickable="true" />
 
-    <TextView android:id="@+id/rep3" android:layout_width="wrap_content"
+    <TextView android:id="@+id/obama" android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/rep3"
+        android:text="@string/obama"
+        android:textColor="#FAFAFA"
+        android:textSize="20dp"
+        android:layout_marginTop="5dp"
+        android:layout_gravity="center_horizontal"
+        android:clickable="true" />
+
+    <TextView android:id="@+id/romney" android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/romney"
         android:textColor="#FAFAFA"
         android:textSize="20dp"
         android:layout_marginTop="5dp"

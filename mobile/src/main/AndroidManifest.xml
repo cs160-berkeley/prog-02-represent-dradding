@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.cs160.joleary.catnip">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -34,6 +37,16 @@
         <activity
             android:name=".detailed"
             android:label="@string/title_activity_detailed"></activity>
-    </application>
+        <uses-permission android:name="android.permission.INTERNET"/>
+        <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+        <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="ab1b40be614e4e1f6d2a28a5e90dc17d4028dfd6" />
 
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyDB3jWXRv7uxyZd-C6_P_8E1BqSvZNw6fc"/>
+
+    </application>
 </manifest>

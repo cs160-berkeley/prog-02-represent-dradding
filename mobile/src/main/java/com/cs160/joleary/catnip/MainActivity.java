@@ -6,11 +6,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,7 +26,9 @@ import com.twitter.sdk.android.Twitter;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
 import io.fabric.sdk.android.Fabric;
 
-public class MainActivity extends Activity  {
+public class MainActivity extends Activity implements
+        GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener {
 
     // Note: Your consumer key and secret should be obfuscated in your source code before shipping.
     private static final String TWITTER_KEY = "yUeWj6i4abIalzjHXAboOiRQp";
@@ -38,7 +40,12 @@ public class MainActivity extends Activity  {
 //    private Button mFredButton;
 //    private Button mLexyButton;
     private Button mLocationButton;
-    private GPSActivity GoogleApiClient;
+    protected GoogleApiClient mGoogleApiClient;
+    protected Location mLastLocation;
+    protected static final String ADDRESS_REQUESTED_KEY = "address-request-pending";
+    protected static final String LOCATION_ADDRESS_KEY = "location-address";
+
+    protected static final String TAG = "main-activity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,22 +53,18 @@ public class MainActivity extends Activity  {
         TwitterAuthConfig authConfig = new TwitterAuthConfig(TWITTER_KEY, TWITTER_SECRET);
         Fabric.with(this, new Twitter(authConfig));
 
-        GoogleApiClient = new GPSActivity();
-        //GoogleApiClient.onStart();
+        if (mGoogleApiClient == null) {
+            mGoogleApiClient = new GoogleApiClient.Builder(this)
+                    .addConnectionCallbacks(this)
+                    .addOnConnectionFailedListener(this)
+                    .addApi(LocationServices.API)
+                    .build();
+        }
 
         setContentView(R.layout.activity_main);
         mLocationButton = (Button)findViewById(R.id.location_btn);
         final EditText zip = (EditText)findViewById(R.id.zipcode);
 
-//        public void getLocation(View view) {
-//            TextView tv = (TextView) findViewById(R.id.gps_coord_view);
-//            LocationManager lm = (LocationManager) getSystemService(LOCATION_SERVICE);
-//                if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-//                        && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-//                    Location loc = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-//                    tv.setText("Latitude: " + loc.getLatitude() + "\nLongitude: " + loc.getLongitude());
-//            }
-//        }
 
 //        mFredButton = (Button) findViewById(R.id.fred_btn);
 //        mLexyButton = (Button) findViewById(R.id.lexy_btn);
@@ -85,16 +88,32 @@ public class MainActivity extends Activity  {
                     int duration = Toast.LENGTH_SHORT;
                     Toast toast = Toast.makeText(context, "No Location Permission", duration);
                     toast.show();
+
+                    System.out.println("PERMISSION ISSUE");
+
                 } else {
-                    LocationManager lm = (LocationManager) getSystemService(LOCATION_SERVICE);
-                    Location loc = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                    //tv.setText("Latitude: " + loc.getLatitude() + "\nLongitude: " + loc.getLongitude());
+//                    LocationManager lm = (LocationManager) getSystemService(LOCATION_SERVICE);
+//                    Location loc = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+//                    //tv.setText("Latitude: " + loc.getLatitude() + "\nLongitude: " + loc.getLongitude());
+
+                    //mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+
                     Context context = getApplicationContext();
-                    CharSequence text = "Latitude: " + loc.getLatitude() + "\nLongitude: " + loc.getLongitude();
+
                     int duration = Toast.LENGTH_SHORT;
 
-                    Toast toast = Toast.makeText(context, text, duration);
-                    toast.show();
+                    if (mLastLocation == null) {
+                        Toast toast = Toast.makeText(context, "SHIT", duration);
+                        toast.show();
+                    } else {
+                        Toast toast = Toast.makeText(context, "NOT SHIT", duration);
+                        toast.show();
+                    }
+
+                    //CharSequence text = "Latitude: " + String.valueOf(mLastLocation.getLatitude()) + "\nLongitude: " + String.valueOf(mLastLocation.getLongitude());
+
+//                    Toast toast = Toast.makeText(context, text, duration);
+//                    toast.show();
 
                 }
 
@@ -102,9 +121,12 @@ public class MainActivity extends Activity  {
 //                sendIntent.putExtra("REP_NAME", "REP A");
 //                startService(sendIntent);
 //
-//                Intent i = new Intent(getApplicationContext(), congressional.class);
-//                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                getApplicationContext().startActivity(i);
+                Intent i = new Intent(getApplicationContext(), congressional.class);
+                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                i.putExtra("latitude", "37.8671390");
+                i.putExtra("longitude", "-122.2503590");
+                i.putExtra("type", "geo");
+                getApplicationContext().startActivity(i);
 
             }
         });
@@ -122,6 +144,8 @@ public class MainActivity extends Activity  {
                     public void onClick(View v) {
                         Intent i = new Intent(getApplicationContext(), congressional.class);
                         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        i.putExtra("zip", zip.getText().toString());
+                        i.putExtra("type", "zip");
                         getApplicationContext().startActivity(i);
                     }
                 });
@@ -153,59 +177,51 @@ public class MainActivity extends Activity  {
         return super.onOptionsItemSelected(item);
     }
 
-    public class GPSActivity extends Activity implements
-            GoogleApiClient.ConnectionCallbacks,
-            GoogleApiClient.OnConnectionFailedListener {
-
-        private GoogleApiClient mGoogleApiClient;
-
-        @Override
-        protected void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            mGoogleApiClient = new GoogleApiClient.Builder(this)
-                    .addApi(LocationServices.API)
-                    .addApi(Wearable.API)  // used for data layer API
-                    .addConnectionCallbacks(this)
-                    .addOnConnectionFailedListener(this)
-                    .build();
-        }
-
-        @Override
-        protected void onResume() {
-            super.onResume();
-            mGoogleApiClient.connect();
-        }
-
-        @Override
-        protected void onPause() {
-            super.onPause();
-            mGoogleApiClient.disconnect();
-        }
-        @Override
-        public void onConnected(Bundle bundle) {
-            mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
-                    mGoogleApiClient);
-            if (mLastLocation != null) {
-                mLatitudeText.setText(String.valueOf(mLastLocation.getLatitude()));
-                mLongitudeText.setText(String.valueOf(mLastLocation.getLongitude()));
-            }
-        }
-
-        @Override
-        public void onConnectionSuspended(int i) {}
-
-        @Override
-        public void onConnectionFailed(ConnectionResult connResult) {}
-
-        protected void onStart() {
-            mGoogleApiClient.connect();
-            super.onStart();
-        }
-
-        protected void onStop() {
-            mGoogleApiClient.disconnect();
-            super.onStop();
-        }
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mGoogleApiClient.connect();
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mGoogleApiClient.disconnect();
+    }
+    @Override
+    public void onConnected(Bundle bundle) {
+        Log.d(TAG, "GOOGLE API CONNECTED!");
+        if (mGoogleApiClient!=null){
+            System.out.println("mGOOGLEAPICLIENT NOT IS NULL " + mGoogleApiClient);
+        }
+        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
+                mGoogleApiClient);
+
+        if (mLastLocation == null) {
+            System.out.println("THIS SHIT IS NULL !!!!!!!!!!!!!!!!!!!!!!!!! " + mLastLocation);
+//            mLatitudeText.setText(String.valueOf(mLastLocation.getLatitude()));
+//            mLongitudeText.setText(String.valueOf(mLastLocation.getLongitude()));
+        } else {
+            System.out.println("THIS SHIT IS NOT NULL !!!!!!!!!!!!!!!!!!!!!!!!! " + mLastLocation);
+        }
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {}
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connResult) {}
+
+    @Override
+    protected void onStart() {
+        mGoogleApiClient.connect();
+        super.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        mGoogleApiClient.disconnect();
+        super.onStop();
+    }
+
 }

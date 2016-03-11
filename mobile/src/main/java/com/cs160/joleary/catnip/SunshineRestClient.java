@@ -1,10 +1,11 @@
 //package com.cs160.joleary.catnip;
-////import com.loopj.android.http.*;
+//
+//import android.os.AsyncTask;
 //
 ///**
 // * Created by dradding on 3/9/16.
 // */
-//public class SunshineRestClient {
+//private class SunshineRestClient extends AsyncTask<String, String, String>{
 //    private static final String BASE_URL = "congress.api.sunlightfoundation.com/";
 //
 //    private static AsyncHttpClient client = new AsyncHttpClient();

@@ -1,6 +1,7 @@
 package com.cs160.joleary.catnip;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
 import android.preference.PreferenceActivity;
@@ -12,6 +13,10 @@ import android.widget.Toast;
 import org.json.*;
 
 
+import java.io.BufferedInputStream;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,31 +42,79 @@ public class congressional extends Activity {
             String type = extras.getString("type");
             if (type.equals("zip")) {
                 String zip = extras.getString("zip");
-                RequestParams params = new RequestParams();
-                params.put("zip", zip);
-                params.put("apikey", "bc29918f07bb41ceb87fdb41db03658f");
-                SunshineRestClient.get("legislators/locate", new JsonHttpResponseHandler() {
-                    //@Override
-                    public void onSuccess(int statusCode, PreferenceActivity.Header[] headers, JSONObject response) {
-                        // If the response is JSONObject instead of expected JSONArray
-                    }
-
-                    @Override
-                    public void onSuccess(int statusCode, PreferenceActivity.Header[] headers, JSONArray timeline) {
-                        // Pull out the first event on the public timeline
-                        JSONObject firstEvent = timeline.get(0);
-                    String tweetText = firstEvent.getString("text");
-
-                        // Do something with the response
-                        System.out.println(tweetText);
-                    }
-                });
+                new SunshineRestClient().execute("zip=94501");
+//                RequestParams params = new RequestParams();
+//                params.put("zip", zip);
+//                params.put("apikey", "bc29918f07bb41ceb87fdb41db03658f");
+//                SunshineRestClient.get("legislators/locate", new JsonHttpResponseHandler() {
+//                    //@Override
+//                    public void onSuccess(int statusCode, PreferenceActivity.Header[] headers, JSONObject response) {
+//                        // If the response is JSONObject instead of expected JSONArray
+//                    }
+//
+//                    @Override
+//                    public void onSuccess(int statusCode, PreferenceActivity.Header[] headers, JSONArray timeline) {
+//                        // Pull out the first event on the public timeline
+//                        JSONObject firstEvent = timeline.get(0);
+//                    String tweetText = firstEvent.getString("text");
+//
+//                        // Do something with the response
+//                        System.out.println(tweetText);
+//                    }
+//                });
 
             } else {
                 String latitude = extras.getString("latitude");
                 String  longitude = extras.getString("longitude");
             }
 
+        }
+    }
+    private class SunshineRestClient extends AsyncTask<String, String, String> {
+        private final String baseUrl = "http://congress.api.sunlightfoundation.com/legislators/locate?";
+        private final String apikey="&apikey=bc29918f07bb41ceb87fdb41db03658f";
+        @Override
+        protected String doInBackground(String... params) {
+
+            String urlString=baseUrl + params[0] + apikey; // URL to call
+
+            String resultToDisplay = "";
+
+            InputStream in = null;
+
+            // HTTP Get
+            try {
+
+                URL url = new URL(urlString);
+
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+
+                in = new BufferedInputStream(urlConnection.getInputStream());
+
+            } catch (Exception e ) {
+
+                System.out.println(e.getMessage());
+
+                return e.getMessage();
+
+            }
+
+            try {
+            //System.out.println("RESULTS: " + new JSONObject(in.toString()));
+                byte[] contents = new byte[1024];
+                int bytesRead=0;
+                String strFileContents = "";
+                while( (bytesRead = in.read(contents)) != -1){
+                    strFileContents += new String(contents, 0, bytesRead);
+                }
+                System.out.print("RESULTS: " + strFileContents);
+            } catch (Exception e) {
+
+                System.out.println("FUCK");
+                return e.getMessage();
+            }
+
+            return resultToDisplay;
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.cs160.joleary.catnip;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,17 +55,16 @@ public class PersonArrayAdapter extends BaseAdapter {
 
         //Attaching onClickListener
 
-//        personRow.setOnClickListener(new View.OnClickListener() {
-//
-//            public void onClick(View v) {
-//
-//                Toast.makeText(context, names[position], Toast.LENGTH_SHORT).show();
-////                Intent intentDetailed = new Intent(getApplicationContext(), detailed.class);
-////                intentDetailed.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-////                getApplicationContext().startActivity(intentDetailed);
-//
-//            }
-//        });
+        personRow.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View v) {
+
+                Intent intentDetailed = new Intent(context.getApplicationContext(), detailed.class);
+                intentDetailed.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.getApplicationContext().startActivity(intentDetailed);
+
+            }
+        });
 
         return personRow;
 
@@ -79,6 +79,6 @@ public class PersonArrayAdapter extends BaseAdapter {
     }
 
     public int getCount() {
-        return -1;
+        return names.length;
     }
 }

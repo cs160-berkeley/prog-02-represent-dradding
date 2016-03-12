@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.text.Editable;
@@ -24,6 +25,12 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.wearable.Wearable;
 import com.twitter.sdk.android.Twitter;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
+
+import java.io.BufferedInputStream;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
 import io.fabric.sdk.android.Fabric;
 
 public class MainActivity extends Activity implements
@@ -142,11 +149,12 @@ public class MainActivity extends Activity implements
                 zip.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent i = new Intent(getApplicationContext(), congressional.class);
-                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        i.putExtra("zip", zip.getText().toString());
-                        i.putExtra("type", "zip");
-                        getApplicationContext().startActivity(i);
+                        new SunshineRestClient().execute("zip=" + zip.getText().toString());
+//                        Intent i = new Intent(getApplicationContext(), congressional.class);
+//                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                        i.putExtra("zip", zip.getText().toString());
+//                        i.putExtra("type", "zip");
+//                        getApplicationContext().startActivity(i);
                     }
                 });
             }
@@ -224,4 +232,59 @@ public class MainActivity extends Activity implements
         super.onStop();
     }
 
+    private class SunshineRestClient extends AsyncTask<String, String, String> {
+        private final String baseUrl = "http://congress.api.sunlightfoundation.com/legislators/locate?";
+        private final String apikey="&apikey=bc29918f07bb41ceb87fdb41db03658f";
+        @Override
+        protected String doInBackground(String... params) {
+
+            String urlString=baseUrl + params[0] + apikey; // URL to call
+
+            String resultToDisplay = "";
+
+            InputStream in = null;
+
+            // HTTP Get
+            try {
+
+                URL url = new URL(urlString);
+
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+
+                in = new BufferedInputStream(urlConnection.getInputStream());
+
+            } catch (Exception e ) {
+
+                System.out.println(e.getMessage());
+
+                //return e.getMessage();
+
+            }
+
+            try {
+                //System.out.println("RESULTS: " + new JSONObject(in.toString()));
+                byte[] contents = new byte[1024];
+                int bytesRead=0;
+                String strFileContents = "";
+                while( (bytesRead = in.read(contents)) != -1){
+                    strFileContents += new String(contents, 0, bytesRead);
+                }
+                //System.out.print("RESULTS: " + strFileContents);
+                resultToDisplay = strFileContents;
+            } catch (Exception e) {
+
+                System.out.println("FUCK");
+                //return e.getMessage();
+            }
+            return resultToDisplay;
+        }
+
+        protected void onPostExecute(String result) {
+
+            Intent i = new Intent(getApplicationContext(), congressional.class);
+            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            i.putExtra("results", result);
+            getApplicationContext().startActivity(i);
+        }
+    }
 }

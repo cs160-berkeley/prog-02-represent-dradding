@@ -15,7 +15,8 @@
         android:layout_height="wrap_content"
         android:id="@+id/imageView"
         android:src="@drawable/fred_160"
-        android:layout_above="@+id/textView"
+        android:layout_marginTop="33dp"
+        android:layout_below="@+id/name"
         android:layout_centerHorizontal="true" />
 
     <TextView
@@ -23,9 +24,9 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Party"
-        android:id="@+id/textView"
+        android:id="@+id/party"
         android:textColor="#FAFAFA"
-        android:layout_above="@+id/textView2"
+        android:layout_below="@+id/imageView"
         android:layout_centerHorizontal="true" />
 
     <TextView
@@ -33,20 +34,20 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Assumed Office"
-        android:id="@+id/textView2"
+        android:id="@+id/dates"
         android:textColor="#FAFAFA"
-        android:layout_centerVertical="true"
-        android:layout_alignStart="@+id/imageView" />
+        android:layout_below="@+id/party"
+        android:layout_centerHorizontal="true" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Current Commitees"
-        android:id="@+id/textView3"
-        android:layout_below="@+id/textView2"
-        android:layout_centerHorizontal="true"
-        android:textColor="#FAFAFA" />
+        android:text="Current Committees"
+        android:id="@+id/committees"
+        android:textColor="#FAFAFA"
+        android:layout_below="@+id/dates"
+        android:layout_centerHorizontal="true" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -54,38 +55,48 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Recently Sponsored Bills"
         android:id="@+id/textView4"
-        android:layout_below="@+id/textView3"
-        android:layout_centerHorizontal="true"
         android:textColor="#FAFAFA"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:layout_below="@+id/committees"
+        android:layout_centerHorizontal="true" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Bill 1"
-        android:id="@+id/textView5"
+        android:id="@+id/bill1"
+        android:textColor="#FAFAFA"
         android:layout_below="@+id/textView4"
-        android:layout_centerHorizontal="true"
-        android:textColor="#FAFAFA" />
+        android:layout_centerHorizontal="true" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Bill 2"
-        android:id="@+id/textView6"
-        android:layout_below="@+id/textView5"
-        android:layout_centerHorizontal="true"
-        android:textColor="#FAFAFA" />
+        android:id="@+id/bill2"
+        android:textColor="#FAFAFA"
+        android:layout_below="@+id/bill1"
+        android:layout_centerHorizontal="true" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Bill 3"
-        android:id="@+id/textView7"
-        android:layout_below="@+id/textView6"
-        android:layout_alignStart="@+id/textView6"
+        android:id="@+id/bill3"
+        android:textColor="#FAFAFA"
+        android:layout_below="@+id/bill2"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Name"
+        android:id="@+id/name"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
         android:textColor="#FAFAFA" />
 </RelativeLayout>

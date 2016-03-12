@@ -10,6 +10,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.util.Arrays;
 
 /**
@@ -23,8 +26,9 @@ public class PersonArrayAdapter extends BaseAdapter {
     private final String[] websites;
     private final String[] tweets;
     private final int[] photos;
+    private final JSONObject[] info;
 
-    public PersonArrayAdapter(Context context, String[] names, String[] emails, String[] websites, String[] tweets, int[] photos) {
+    public PersonArrayAdapter(Context context, String[] names, String[] emails, String[] websites, String[] tweets, int[] photos, JSONObject[] info) {
 
         this.context = context;
         this.names = names;
@@ -32,6 +36,7 @@ public class PersonArrayAdapter extends BaseAdapter {
         this.websites = websites;
         this.tweets = tweets;
         this.photos = photos;
+        this.info = info;
 
     }
 
@@ -53,14 +58,14 @@ public class PersonArrayAdapter extends BaseAdapter {
         tweetView.setText(tweets[position]);
         pictureView.setImageResource(photos[position]);
 
-        //Attaching onClickListener
-
         personRow.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View v) {
 
                 Intent intentDetailed = new Intent(context.getApplicationContext(), detailed.class);
                 intentDetailed.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intentDetailed.putExtra("info", info[position].toString());
+                intentDetailed.putExtra("photo", photos[position]);
                 context.getApplicationContext().startActivity(intentDetailed);
 
             }

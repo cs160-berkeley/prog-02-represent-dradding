@@ -38,30 +38,13 @@ public class congressional extends Activity {
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
 
+        JSONObject sunshineJSON;
+
         if (extras != null) {
             String type = extras.getString("type");
             if (type.equals("zip")) {
                 String zip = extras.getString("zip");
                 new SunshineRestClient().execute("zip=94501");
-//                RequestParams params = new RequestParams();
-//                params.put("zip", zip);
-//                params.put("apikey", "bc29918f07bb41ceb87fdb41db03658f");
-//                SunshineRestClient.get("legislators/locate", new JsonHttpResponseHandler() {
-//                    //@Override
-//                    public void onSuccess(int statusCode, PreferenceActivity.Header[] headers, JSONObject response) {
-//                        // If the response is JSONObject instead of expected JSONArray
-//                    }
-//
-//                    @Override
-//                    public void onSuccess(int statusCode, PreferenceActivity.Header[] headers, JSONArray timeline) {
-//                        // Pull out the first event on the public timeline
-//                        JSONObject firstEvent = timeline.get(0);
-//                    String tweetText = firstEvent.getString("text");
-//
-//                        // Do something with the response
-//                        System.out.println(tweetText);
-//                    }
-//                });
 
             } else {
                 String latitude = extras.getString("latitude");
@@ -107,13 +90,13 @@ public class congressional extends Activity {
                 while( (bytesRead = in.read(contents)) != -1){
                     strFileContents += new String(contents, 0, bytesRead);
                 }
-                System.out.print("RESULTS: " + strFileContents);
+                //System.out.print("RESULTS: " + strFileContents);
+                resultToDisplay = strFileContents;
             } catch (Exception e) {
 
                 System.out.println("FUCK");
                 return e.getMessage();
             }
-
             return resultToDisplay;
         }
     }

@@ -9,16 +9,28 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
-
 import java.util.Arrays;
+import java.util.List;
+
+import io.fabric.sdk.android.Fabric;
+
+import com.twitter.sdk.android.core.Callback;
+import com.twitter.sdk.android.core.Result;
+import com.twitter.sdk.android.core.TwitterException;
+import com.twitter.sdk.android.core.models.Tweet;
+import com.twitter.sdk.android.tweetui.TweetUtils;
+import com.twitter.sdk.android.tweetui.TweetView;
+import com.twitter.sdk.android.tweetui.UserTimeline;
 
 /**
  * Created by dradding on 3/10/16.
  */
 public class PersonArrayAdapter extends BaseAdapter {
+
+    private static final String TWITTER_KEY = "yUeWj6i4abIalzjHXAboOiRQp";
+    private static final String TWITTER_SECRET = "yRM6f4gm2dopgrxngI6HjmP4e5EdJVox1OPPwzlH2Wed3misFg";
 
     private final Context context;
     private final String[] names;
@@ -51,6 +63,9 @@ public class PersonArrayAdapter extends BaseAdapter {
         TextView websiteView = (TextView) personRow.findViewById(R.id.website);
         TextView tweetView = (TextView) personRow.findViewById(R.id.tweet);
         ImageView pictureView = (ImageView) personRow.findViewById(R.id.icon);
+
+        UserTimeline userTimeline = new UserTimeline.Builder().screenName(tweets[position]).build();
+        System.out.println("TWITTER: " + userTimeline);
 
         nameView.setText(names[position]);
         emailView.setText(emails[position]);

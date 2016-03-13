@@ -16,8 +16,11 @@ import java.util.List;
 
 import io.fabric.sdk.android.Fabric;
 
+import com.twitter.sdk.android.core.AppSession;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
+import com.twitter.sdk.android.core.TwitterApiClient;
+import com.twitter.sdk.android.core.TwitterCore;
 import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.models.Tweet;
 import com.twitter.sdk.android.tweetui.TweetUtils;
@@ -61,16 +64,43 @@ public class PersonArrayAdapter extends BaseAdapter {
         TextView nameView = (TextView) personRow.findViewById(R.id.name);
         TextView emailView = (TextView) personRow.findViewById(R.id.email);
         TextView websiteView = (TextView) personRow.findViewById(R.id.website);
-        TextView tweetView = (TextView) personRow.findViewById(R.id.tweet);
+        final TextView tweetView = (TextView) personRow.findViewById(R.id.tweet);
         ImageView pictureView = (ImageView) personRow.findViewById(R.id.icon);
 
-        UserTimeline userTimeline = new UserTimeline.Builder().screenName(tweets[position]).build();
-        System.out.println("TWITTER: " + userTimeline);
+        TwitterCore.getInstance().logInGuest(new Callback<AppSession>() {
+            @Override
+            public void success(Result<AppSession> appSessionResult) {
+                AppSession session = appSessionResult.data;
+                TwitterApiClient twitterApiClient = TwitterCore.getInstance().getApiClient(session);
+                twitterApiClient.getStatusesService().userTimeline(null, tweets[position], 1,
+                        null, null, false, false, false, true, new Callback<List<Tweet>>() {
+
+                            @Override
+                            public void success(Result<List<Tweet>> result) {
+                                for (Tweet tweet : result.data) {
+                                    //System.out.println("TWEET: " + tweet.text);
+                                    tweetView.setText(tweet.text);
+
+                                }
+                            }
+
+                            @Override
+                            public void failure(TwitterException e) {
+                                tweetView.setText("Twitter: " + tweets[position]);
+                                e.printStackTrace();
+                            }
+                        });
+            }
+
+            public void failure(TwitterException e) {
+                e.printStackTrace();
+            }
+        });
+
 
         nameView.setText(names[position]);
         emailView.setText(emails[position]);
         websiteView.setText(websites[position]);
-        tweetView.setText(tweets[position]);
         pictureView.setImageResource(photos[position]);
 
         personRow.setOnClickListener(new View.OnClickListener() {

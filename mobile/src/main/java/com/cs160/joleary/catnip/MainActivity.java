@@ -26,10 +26,15 @@ import com.google.android.gms.wearable.Wearable;
 import com.twitter.sdk.android.Twitter;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.io.BufferedInputStream;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 import io.fabric.sdk.android.Fabric;
 
@@ -110,11 +115,15 @@ public class MainActivity extends Activity implements
                     int duration = Toast.LENGTH_SHORT;
 
                     if (mLastLocation == null) {
-                        Toast toast = Toast.makeText(context, "SHIT", duration);
+                        Toast toast = Toast.makeText(context, "location not working", duration);
                         toast.show();
                     } else {
-                        Toast toast = Toast.makeText(context, "NOT SHIT", duration);
+                        System.out.println("LOCATION SUCCESS");
+                        CharSequence text = "Latitude: " + String.valueOf(mLastLocation.getLatitude()) + "\nLongitude: " + String.valueOf(mLastLocation.getLongitude());
+                        Toast toast = Toast.makeText(context, text, duration);
                         toast.show();
+//                        Toast toast = Toast.makeText(context, "location working", duration);
+//                        toast.show();
                     }
 
                     //CharSequence text = "Latitude: " + String.valueOf(mLastLocation.getLatitude()) + "\nLongitude: " + String.valueOf(mLastLocation.getLongitude());
@@ -206,11 +215,11 @@ public class MainActivity extends Activity implements
                 mGoogleApiClient);
 
         if (mLastLocation == null) {
-            System.out.println("THIS SHIT IS NULL !!!!!!!!!!!!!!!!!!!!!!!!! " + mLastLocation);
+            System.out.println("THIS IS NULL !!!!!!!!!!!!!!!!!!!!!!!!! " + mLastLocation);
 //            mLatitudeText.setText(String.valueOf(mLastLocation.getLatitude()));
 //            mLongitudeText.setText(String.valueOf(mLastLocation.getLongitude()));
         } else {
-            System.out.println("THIS SHIT IS NOT NULL !!!!!!!!!!!!!!!!!!!!!!!!! " + mLastLocation);
+            System.out.println("THIS IS NOT NULL !!!!!!!!!!!!!!!!!!!!!!!!! " + mLastLocation);
         }
     }
 
@@ -273,7 +282,7 @@ public class MainActivity extends Activity implements
                 resultToDisplay = strFileContents;
             } catch (Exception e) {
 
-                System.out.println("FUCK");
+                System.out.println(e.getMessage());
                 //return e.getMessage();
             }
             return resultToDisplay;
@@ -281,10 +290,38 @@ public class MainActivity extends Activity implements
 
         protected void onPostExecute(String result) {
 
-            Intent i = new Intent(getApplicationContext(), congressional.class);
-            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            i.putExtra("results", result);
-            getApplicationContext().startActivity(i);
+            try {
+                JSONObject resultsJSON = new JSONObject(result);
+                int count = resultsJSON.getInt("count");
+                JSONArray resultsArray = resultsJSON.getJSONArray("results");
+
+                List<String> names = new ArrayList<String>();
+
+                for(int i=0; i<count; i++) {
+                    JSONObject info = resultsArray.getJSONObject(i);
+                    names.add(info.getString("first_name") + " " + info.getString("last_name"));
+                }
+
+                Intent sendIntent = new Intent(getBaseContext(), PhoneToWatchService.class);
+
+                String toSend = "";
+                for(int i = 0; i<count; i++){
+                    //sendIntent.putExtra("REP_NAME" + String.valueOf(i), names.get(i));
+                    toSend += names.get(i) + "BEATLES";
+                }
+
+                sendIntent.putExtra("REPS", toSend);
+                startService(sendIntent);
+
+                Intent i = new Intent(getApplicationContext(), congressional.class);
+                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                i.putExtra("results", result);
+                getApplicationContext().startActivity(i);
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+                Toast toast = Toast.makeText(getApplicationContext(), "something went wrong, start over", Toast.LENGTH_SHORT);
+                toast.show();
+            }
         }
     }
 }

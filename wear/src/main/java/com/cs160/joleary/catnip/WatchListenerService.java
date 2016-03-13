@@ -16,7 +16,7 @@ public class WatchListenerService extends WearableListenerService {
     // These paths serve to differentiate different phone-to-watch messages
     private static final String FRED_FEED = "/Fred";
     private static final String LEXY_FEED = "/Lexy";
-    private static final String MAIN_ACTIVITY = "/Main";
+    private static final String List_ACTIVITY = "/List";
 
     @Override
     public void onMessageReceived(MessageEvent messageEvent) {
@@ -40,13 +40,17 @@ public class WatchListenerService extends WearableListenerService {
             intent.putExtra("CAT_NAME", "Lexy");
             Log.d("T", "about to start watch MainActivity with CAT_NAME: Lexy");
             startActivity(intent);
-        } else if (messageEvent.getPath().equalsIgnoreCase( MAIN_ACTIVITY )) {
+        } else if (messageEvent.getPath().equalsIgnoreCase( List_ACTIVITY )) {
             String value = new String(messageEvent.getData(), StandardCharsets.UTF_8);
-            Intent intent = new Intent(this, MainActivity.class );
+            System.out.println("DATA DATA: " + value.split("BEATLES").toString());
+
+
+            Intent intent = new Intent(this, ListActivity.class);
+            intent.putExtra("results", value);
             intent.addFlags( Intent.FLAG_ACTIVITY_NEW_TASK );
             //you need to add this flag since you're starting a new activity from a service
             //intent.putExtra("CAT_NAME", "Lexy");
-            Log.d("T", "about to start watch MainActivity");
+            Log.d("T", "about to start watch ListActivity");
             startActivity(intent);
         }else {
             super.onMessageReceived( messageEvent );

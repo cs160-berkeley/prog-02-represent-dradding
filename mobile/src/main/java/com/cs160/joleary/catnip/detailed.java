@@ -97,7 +97,7 @@ public class detailed extends Activity {
                 resultToDisplay = strFileContents;
             } catch (Exception e) {
 
-                System.out.println("FUCK");
+                System.out.println(e.getMessage());
                 //return e.getMessage();
             }
 
@@ -130,7 +130,7 @@ public class detailed extends Activity {
                 resultToDisplay2 = strFileContents;
             } catch (Exception e) {
 
-                System.out.println("FUCK");
+                System.out.println(e.getMessage());
                 //return e.getMessage();
             }
 

@@ -21,8 +21,8 @@ public class ListActivity extends Activity {
 
         //mFeedBtn = (Button) findViewById(R.id.feed_btn);
 
-        //Intent intent = getIntent();
-        //Bundle extras = intent.getExtras();
+        Intent intent = getIntent();
+        Bundle extras = intent.getExtras();
 
 //        if (extras != null) {
 //            String catName = extras.getString("CAT_NAME");
@@ -36,30 +36,36 @@ public class ListActivity extends Activity {
 //                startService(sendIntent);
 //            }
 //        });
-//        final TextView rep1 = (TextView)findViewById(R.id.rep1);
-//        final TextView rep2 = (TextView)findViewById(R.id.rep2);
-//        final TextView rep3 = (TextView)findViewById(R.id.rep3);
-//
-//        rep1.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent sendIntent = new Intent(getBaseContext(), WatchToPhoneService.class);
-//                startService(sendIntent);
-//            }
-//        });
-//        rep2.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent sendIntent = new Intent(getBaseContext(), WatchToPhoneService.class);
-//                startService(sendIntent);
-//            }
-//        });
-//        rep3.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent sendIntent = new Intent(getBaseContext(), WatchToPhoneService.class);
-//                startService(sendIntent);
-//            }
-//        });
+        final TextView rep1 = (TextView)findViewById(R.id.rep1);
+        final TextView rep2 = (TextView)findViewById(R.id.rep2);
+        final TextView rep3 = (TextView)findViewById(R.id.rep3);
+
+
+
+//        rep1.setText();
+//        rep2.setText();
+//        rep3.setText();
+
+        rep1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent sendIntent = new Intent(getBaseContext(), WatchToPhoneService.class);
+                startService(sendIntent);
+            }
+        });
+        rep2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent sendIntent = new Intent(getBaseContext(), WatchToPhoneService.class);
+                startService(sendIntent);
+            }
+        });
+        rep3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent sendIntent = new Intent(getBaseContext(), WatchToPhoneService.class);
+                startService(sendIntent);
+            }
+        });
     }
 }

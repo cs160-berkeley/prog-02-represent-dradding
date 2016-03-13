@@ -41,7 +41,7 @@ public class detailed extends Activity {
 
             name.setText(info.getString("first_name") + " " + info.getString("last_name"));
             party.setText(info.getString("party"));
-            dates.setText("Current Term: " + info.getString("term_start") + "-" + info.getString("term_end"));
+            dates.setText("Current Term: " + info.getString("term_start") + " to " + info.getString("term_end"));
 
             new SunshineRestClient().execute(info.getString("bioguide_id"));
 

@@ -11,11 +11,12 @@
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/activity_vertical_margin"
         tools:context="com.cs160.joleary.catnip.detailed"
-        android:background="#002868">
+        android:background="#002868"
+        android:nestedScrollingEnabled="true">
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="160dp"
+            android:layout_height="160dp"
             android:id="@+id/imageView"
             android:src="@drawable/fred_160"
             android:layout_marginTop="33dp"
@@ -47,11 +48,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Current Committees"
+            android:text="Committees List"
             android:id="@+id/committees"
             android:textColor="#FAFAFA"
-            android:layout_below="@+id/dates"
-            android:layout_centerHorizontal="true" />
+            android:layout_below="@+id/textView"
+            android:layout_alignEnd="@+id/imageView" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -103,5 +104,16 @@
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:textColor="#FAFAFA" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Current Committees"
+            android:id="@+id/textView"
+            android:layout_below="@+id/dates"
+            android:layout_centerHorizontal="true"
+            android:textColor="#FAFAFA"
+            android:textStyle="bold" />
     </RelativeLayout>
 </ScrollView>

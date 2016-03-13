@@ -5,7 +5,7 @@
     tools:context=".MainActivity" android:orientation="vertical" tools:deviceIds="wear_round"
     android:background="#BF0A30">
 
-    <TextView android:id="@+id/rep1" android:layout_width="wrap_content"
+    <TextView android:id="@+id/title" android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:text="@string/app_name"
     android:textColor="#FAFAFA"
@@ -13,40 +13,6 @@
     android:layout_marginTop="5dp"
     android:layout_gravity="center_horizontal"
     android:clickable="false" />
-
-    <!--<android.support.wearable.view.GridViewPager-->
-        <!--xmlns:android="http://schemas.android.com/apk/res/android"-->
-        <!--android:id="@+id/pager"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent" />-->
-
-    <!--<TextView android:id="@+id/rep1" android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="@string/rep1"-->
-        <!--android:textColor="#FAFAFA"-->
-        <!--android:textSize="20dp"-->
-        <!--android:layout_marginTop="5dp"-->
-        <!--android:layout_gravity="center_horizontal"-->
-        <!--android:clickable="true" />-->
-
-    <!--<TextView android:id="@+id/rep2" android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="@string/rep2"-->
-        <!--android:textColor="#FAFAFA"-->
-        <!--android:textSize="20dp"-->
-        <!--android:layout_marginTop="5dp"-->
-        <!--android:layout_gravity="center_horizontal"-->
-        <!--android:clickable="true" />-->
-
-    <!--<TextView android:id="@+id/rep3" android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="@string/rep3"-->
-        <!--android:textColor="#FAFAFA"-->
-        <!--android:textSize="20dp"-->
-        <!--android:layout_marginTop="5dp"-->
-        <!--android:layout_gravity="center_horizontal"-->
-        <!--android:clickable="true" />-->
-
 
 </LinearLayout>
 

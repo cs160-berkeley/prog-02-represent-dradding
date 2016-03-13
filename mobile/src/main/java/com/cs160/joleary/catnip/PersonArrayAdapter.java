@@ -75,6 +75,8 @@ public class PersonArrayAdapter extends BaseAdapter {
         final TextView tweetView = (TextView) personRow.findViewById(R.id.tweet);
         final ImageView pictureView = (ImageView) personRow.findViewById(R.id.icon);
 
+        final Bitmap[] pics = new Bitmap[1];
+
         TwitterCore.getInstance().logInGuest(new Callback<AppSession>() {
             @Override
             public void success(Result<AppSession> appSessionResult) {
@@ -94,6 +96,7 @@ public class PersonArrayAdapter extends BaseAdapter {
                                         URL url = new URL(tweet.user.profileImageUrl);
                                         Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
                                         //imageView.setImageBitmap(bmp);
+                                        pics[0] = bmp;
                                         pictureView.setImageBitmap(bmp);
                                     } catch (Exception e) {
                                         System.out.println("Failed to process photo url");
@@ -129,7 +132,7 @@ public class PersonArrayAdapter extends BaseAdapter {
                 Intent intentDetailed = new Intent(context.getApplicationContext(), detailed.class);
                 intentDetailed.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intentDetailed.putExtra("info", info[position].toString());
-                intentDetailed.putExtra("photo", photos[position]);
+                intentDetailed.putExtra("photo", pics[0]);
                 context.getApplicationContext().startActivity(intentDetailed);
 
             }

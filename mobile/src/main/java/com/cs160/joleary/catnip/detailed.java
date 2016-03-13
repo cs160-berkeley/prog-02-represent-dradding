@@ -1,6 +1,7 @@
 package com.cs160.joleary.catnip;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
@@ -27,6 +28,10 @@ public class detailed extends Activity {
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
         String info_string = extras.getString("info");
+        Bitmap pic = (Bitmap) extras.get("photo");
+
+        final ImageView pictureView = (ImageView) findViewById(R.id.imageView);
+        pictureView.setImageBitmap(pic);
         try {
             JSONObject info = new JSONObject(info_string);
 

@@ -2,6 +2,9 @@ package com.cs160.joleary.catnip;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.StrictMode;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +14,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 
@@ -61,11 +66,14 @@ public class PersonArrayAdapter extends BaseAdapter {
 
         View personRow = inflater.inflate(R.layout.person_row_layout, parent, false);
 
-        TextView nameView = (TextView) personRow.findViewById(R.id.name);
-        TextView emailView = (TextView) personRow.findViewById(R.id.email);
-        TextView websiteView = (TextView) personRow.findViewById(R.id.website);
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+
+        final TextView nameView = (TextView) personRow.findViewById(R.id.name);
+        final TextView emailView = (TextView) personRow.findViewById(R.id.email);
+        final TextView websiteView = (TextView) personRow.findViewById(R.id.website);
         final TextView tweetView = (TextView) personRow.findViewById(R.id.tweet);
-        ImageView pictureView = (ImageView) personRow.findViewById(R.id.icon);
+        final ImageView pictureView = (ImageView) personRow.findViewById(R.id.icon);
 
         TwitterCore.getInstance().logInGuest(new Callback<AppSession>() {
             @Override
@@ -81,12 +89,24 @@ public class PersonArrayAdapter extends BaseAdapter {
                                     //System.out.println("TWEET: " + tweet.text);
                                     tweetView.setText(tweet.text);
 
+                                    try {
+
+                                        URL url = new URL(tweet.user.profileImageUrl);
+                                        Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+                                        //imageView.setImageBitmap(bmp);
+                                        pictureView.setImageBitmap(bmp);
+                                    } catch (Exception e) {
+                                        System.out.println("Failed to process photo url");
+                                        e.printStackTrace();
+                                    }
+
                                 }
                             }
 
                             @Override
                             public void failure(TwitterException e) {
                                 tweetView.setText("Twitter: " + tweets[position]);
+                                pictureView.setImageResource(photos[position]);
                                 e.printStackTrace();
                             }
                         });
@@ -101,7 +121,6 @@ public class PersonArrayAdapter extends BaseAdapter {
         nameView.setText(names[position]);
         emailView.setText(emails[position]);
         websiteView.setText(websites[position]);
-        pictureView.setImageResource(photos[position]);
 
         personRow.setOnClickListener(new View.OnClickListener() {
 
